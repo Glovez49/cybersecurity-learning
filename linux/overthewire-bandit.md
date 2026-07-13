@@ -12,6 +12,7 @@ The Bandit wargame teaches Linux command-line basics through a series of levels,
 **Commands used:**
 - `ls` — listed files in the home directory (found a file named `readme`)
 - `cat readme` — printed the file's contents to reveal the password
+- 
 **What I Learned:**
   Two most basic navigation/reading commands in Linux.
 
@@ -20,6 +21,7 @@ The Bandit wargame teaches Linux command-line basics through a series of levels,
 **Concepts:** Handling filenames that clash with command syntax; relative paths.
 **Command used:**
 - `cat ./-` — the `./` prefix tells `cat` that `-` is a filename in the current directory, not an option/flag.
+- 
 **What I Learned:**
   A lone `-` is often interpreted as stdin by commands, so `./` (or a full path) is needed to reference it as a file.
 
@@ -28,6 +30,7 @@ The Bandit wargame teaches Linux command-line basics through a series of levels,
 **Concepts:** Handling filenames containing spaces and leading dashes.
 **Command used:**
 - `cat "./--spaces in this filename--"` — quotes handle the spaces (so the shell reads it as one filename), and `./` ensures the leading `--` is treated as part of the filename rather than command options.
+- 
 **What I Learned:**
   How the shell parses spaces and dashes, and multiple ways to reference awkwardly-named files.
 
