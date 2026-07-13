@@ -205,6 +205,68 @@ nested layers. Reverse the hexdump, then decompress every layer.
 - The "inspect → act → re-inspect" discipline is the real-world method for
   unpacking unknown files in forensics and malware triage.
 
+  ## Level 13 → 14
+
+**Goal:** Password in `/etc/bandit_pass/bandit14` (readable only by bandit14).
+Given an SSH private key instead of a password.
+
+**Commands used:** `ssh`, `scp`, `chmod` / `icacls`, `cat`
+
+**What I learned:**
+- SSH authenticates with a private key via `ssh -i keyfile user@host` — the key
+  proves identity instead of a password.
+- A private key must have tight permissions or SSH refuses it: `chmod 600` on
+  Linux, `icacls <file> /inheritance:r /grant:r "<user>:(R)"` on Windows.
+- The Bandit server blocks connections originating from localhost (to conserve
+  resources) *before* authentication completes — so the in-session
+  `ssh ... bandit14@localhost` route fails regardless of the key.
+- Fix: pull the key to my own machine with `scp`, then connect to bandit14
+  directly from there (an external origin, not localhost):
+  `scp -P 2220 bandit13@bandit.labs.overthewire.org:sshkey.private ./key`
+  then `ssh -i ./key bandit14@bandit.labs.overthewire.org -p 2220`
+- `scp` uses `-P` (capital) for the port; `ssh` uses `-p` (lowercase).
+- Biggest takeaway: read the actual disconnect reason. The `no identity pubkey
+  loaded` noise was a red herring — the key was fine; the localhost block was
+  the real cause.
+
+  ## Level 14 → 15
+
+**Goal:** Retrieve the next password by submitting the current level's password
+to port 30000 on localhost.
+
+**Commands used:** `nc` (netcat), `cat`
+
+**What I learned:**
+- `nc host port` opens a raw TCP connection; whatever is fed to its stdin is
+  sent over the connection, and the server's reply comes back on stdout:
+  `cat /etc/bandit_pass/bandit14 | nc localhost 30000`
+- A network service is just a program listening on a port — you interact with
+  it by sending bytes and reading the response.
+- The localhost block from the previous level applied only to SSH auth; ordinary
+  TCP services on the machine are reachable from within the session.
+- Netcat is the core "talk to any TCP port" tool, used for banner-grabbing, port
+  probing, and manual protocol interaction in pentesting.
+
+  ## Level 15 → 16
+
+**Goal:** Submit the current password to port 30001 on localhost over SSL/TLS
+to retrieve the next password.
+
+**Commands used:** `openssl s_client`
+
+**What I learned:**
+- A plain TCP tool like `nc` can't talk to a TLS port — the server expects an
+  encrypted handshake first. `openssl s_client` is the TLS-aware equivalent:
+  `openssl s_client -connect localhost:30001 -quiet`
+- `s_client` performs the SSL/TLS handshake (cipher negotiation, certificate
+  exchange), then gives an encrypted channel to send data over — like `nc` but
+  wrapped in TLS. `-connect host:port` sets the target.
+- Gotcha: `s_client` interprets certain input lines as interactive commands
+  (`R` = renegotiate, `Q` = quit), causing `RENEGOTIATING`/`DONE` messages.
+  `-quiet` disables that and passes input through cleanly.
+- Real-world use: debugging TLS — inspecting a server's certificate, checking
+  supported protocol versions, or manually probing an HTTPS service.
+
 ---
 
 *Progress ongoing — updated as I work through the levels.*
