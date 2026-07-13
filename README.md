@@ -24,7 +24,7 @@ Daily use of Linux on my own hardware — a ThinkPad running Ubuntu and a Raspbe
 
 ---
 
-## 🛡️ Cybersecurity
+## Cybersecurity
 
 ### TryHackMe — SOC Level 1
 Progressing through the Security Operations pathway, covering blue team fundamentals, SOC tooling, and defensive frameworks.
@@ -37,12 +37,12 @@ Studying towards certification.
 
 ---
 
-## 🖥️ Projects
+## Projects
 - **[Home Media Server (Raspberry Pi)](https://github.com/Glovez49/homelab-media-server)** — self-hosted media server using Docker, Linux, and networking.
 
 ---
 
-## 🎯 Currently Focused On
+## Currently Focused On
 - Building strong Linux command-line fundamentals
 - Working through the SOC Level 1 pathway
 - Documenting what I learn here as I go
