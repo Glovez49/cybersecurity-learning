@@ -6,7 +6,7 @@ This repo grows as I do. It's both a personal reference and a record of my progr
 
 ---
 
-## 🐧 Linux
+## Linux
 
 ### OverTheWire: Bandit
 Working through the Bandit wargame to build practical Linux command-line and SSH skills.
