@@ -12,7 +12,7 @@ This repo grows as I do. It's both a personal reference and a record of my progr
 Working through the Bandit wargame to build practical Linux command-line and SSH skills.
 - **Status:** In progress
 - **Skills:** Command line navigation, file manipulation, SSH, permissions
-- *(Notes and progress to be added as I work through the levels)*
+- **[Notes](linux/overthewire-bandit.md)**
 
 ### Linux Journey
 Structured study of Linux fundamentals.
@@ -21,6 +21,17 @@ Structured study of Linux fundamentals.
 ### Hands-on: Personal Systems
 Daily use of Linux on my own hardware — a ThinkPad running Ubuntu and a Raspberry Pi home server. I set myself practical tasks: managing files via the terminal, writing Bash scripts, and administering services.
 - **Status:** Ongoing
+
+---
+
+## Web Security
+
+### OverTheWire: Natas
+Working through the Natas wargame to build practical web security skills.
+
+- **Status:** In progress
+- **Skills:** HTTP, browser dev tools, source inspection, client-side security
+- **[Notes](web/overthewire-natas.md)**
 
 ---
 
@@ -46,6 +57,7 @@ Studying towards certification.
 - Building strong Linux command-line fundamentals
 - Working through the SOC Level 1 pathway
 - Documenting what I learn here as I go
+- Starting web security fundamentals via Natas
 
 ---
 
