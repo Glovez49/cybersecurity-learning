@@ -26,6 +26,38 @@
 - Reinforces the same lesson: client-side restrictions are trivially bypassed
   because the client controls the client.
 
+## Level 2 → 3
 
+**Goal:** Find the natas3 password on a page that appears to contain nothing.
 
-  
+**Tools used:** Browser view-source, URL manipulation
+
+**What I learned:**
+- The page was empty, but the source contained an image reference
+  (`<img src="files/pixel.png">`), leaking the existence of a `files/` directory.
+- Requesting the directory path directly returned a browsable listing, because
+  the server had automatic directory indexing enabled — exposing files that were
+  never linked from any page.
+- **Unlinked ≠ inaccessible.** If a file is served, anyone who infers the path
+  can reach it. Obscurity is not access control.
+- Directory indexing should be disabled in production; it turns one leaked path
+  into a full inventory of the folder.
+- This is standard web recon — the same principle behind directory brute-forcing
+  tools like `gobuster` and `dirb`.
+
+## Level 3 → 4
+
+**Goal:** Find the natas4 password. The hint said "not even Google will find it."
+
+**Tools used:** Browser, `robots.txt`
+
+**What I learned:**
+- The Google hint pointed to `robots.txt` — a plain-text file at a site's root
+  listing paths that crawlers should not index.
+- `robots.txt` is publicly readable and purely advisory. Nothing enforces it, so
+  a `Disallow` entry on a secret directory *advertises* that directory rather
+  than protecting it.
+- The file intended to hide the path is exactly what reveals it.
+- **Always check `robots.txt` during web recon** — it's a free map of the paths
+  the site owner considers sensitive.
+- **Never rely on it for security.** It stops polite crawlers, not people.
