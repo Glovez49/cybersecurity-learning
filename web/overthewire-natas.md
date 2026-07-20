@@ -144,3 +144,25 @@ natas5.natas.labs.overthewire.org.
   include.
 - More dangerous than earlier levels: it makes the *server* read arbitrary files,
   and under the right conditions LFI can escalate to remote code execution.
+
+## Level 8 → 9
+
+**Goal:** Submit the correct secret to a form; the expected value is stored
+encoded in the page source.
+
+**Tools used:** Browser source view, `xxd`, `rev`, `base64`
+
+**What I learned:**
+- The source revealed the encoding pipeline applied to the secret:
+  `bin2hex(strrev(base64_encode($secret)))` — base64, then reverse, then hex.
+- Reversing it means undoing each step in the opposite order — hex-decode,
+  reverse, base64-decode:
+  `echo "3d3d516343746d4d6d6c315669563362" | xxd -r -p | rev | base64 -d`
+- Every step (base64, string reversal, hex) is a public, keyless, two-way
+  function — encoding, not encryption.
+- Encoding provides **zero security** once the algorithm is known, and here it
+  was printed on the page via the source link.
+- Same peel-back-the-layers logic as the Bandit compression level, applied to
+  encodings instead of compression formats.
+
+  
